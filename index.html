@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Irina Zelenina — Oil Painting</title>
+<meta name="description" content="Irina Zelenina, oil painter based in Munich. Figurative works, plein air, exhibitions and originals for sale.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #131110;
+    --bg-soft: #1b1815;
+    --ink: #f2ecdd;
+    --muted: #b6ac97;
+    --gold: #c9a15d;
+    --rust: #8a4b30;
+    --line: rgba(242,236,221,0.14);
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+  }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:300;
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; }
+  img{ max-width:100%; display:block; }
+  ::selection{ background:var(--gold); color:#131110; }
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:4px; }
+
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 6vw; }
+  section{ position:relative; }
+
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.6rem 6vw;
+    mix-blend-mode:difference;
+    pointer-events:none;
+  }
+  nav .brand{ font-family:var(--serif); font-size:1.05rem; letter-spacing:.02em; pointer-events:auto; }
+  nav .links{ display:flex; gap:2rem; font-size:.85rem; color:var(--muted); pointer-events:auto; }
+  nav .links a{ text-decoration:none; position:relative; }
+  nav .links a::after{
+    content:''; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:var(--ink);
+    transition:width .4s var(--ease);
+  }
+  nav .links a:hover::after{ width:100%; }
+  @media (max-width:640px){ nav .links{ display:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{
+    height:100svh; min-height:560px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:0 6vw;
+  }
+  .hero-sig{ width:min(560px, 78vw); height:auto; margin-bottom:1.6rem; }
+  .hero-sig path{
+    fill:none; stroke:var(--gold); stroke-width:2.4;
+    stroke-linecap:round; stroke-linejoin:round;
+    stroke-dasharray:1400; stroke-dashoffset:1400;
+    animation:draw 2.2s var(--ease) .3s forwards;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  .hero h1{
+    font-family:var(--serif); font-weight:450; font-style:italic;
+    font-size:clamp(2.1rem, 6vw, 4.2rem);
+    opacity:0; transform:translateY(18px);
+    animation:rise .9s var(--ease) 2.1s forwards;
+  }
+  .hero p{
+    color:var(--muted); font-size:.95rem; letter-spacing:.04em; margin-top:.9rem;
+    opacity:0; transform:translateY(14px);
+    animation:rise .9s var(--ease) 2.4s forwards;
+  }
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+  .scroll-cue{
+    position:absolute; bottom:2.6rem; left:50%; transform:translateX(-50%);
+    width:1px; height:52px; background:var(--line); overflow:hidden;
+    opacity:0; animation:fadeIn 1s var(--ease) 3s forwards;
+  }
+  .scroll-cue::after{
+    content:''; position:absolute; top:-100%; left:0; width:100%; height:100%;
+    background:var(--gold); animation:cue 1.8s ease-in-out infinite 3.4s;
+  }
+  @keyframes cue{ 50%{ top:100%; } 100%{ top:100%; } }
+  @keyframes fadeIn{ to{ opacity:1; } }
+
+  /* ---------- divider stroke ---------- */
+  .stroke-divider{ width:100%; padding:0 6vw; margin:0 auto; max-width:1180px; }
+  .stroke-divider svg{ width:100%; height:28px; display:block; }
+  .stroke-divider path{
+    fill:none; stroke:var(--line); stroke-width:1.5; stroke-linecap:round;
+    stroke-dasharray:900; stroke-dashoffset:900;
+    transition:stroke-dashoffset 1.4s var(--ease);
+  }
+  .stroke-divider.is-visible path{ stroke-dashoffset:0; }
+
+  /* ---------- about ---------- */
+  .about{ padding:9rem 0 8rem; }
+  .about .grid{
+    display:grid; grid-template-columns:0.8fr 1fr; gap:5rem; align-items:center;
+  }
+  .about-portrait{
+    position:relative; aspect-ratio:4/5; overflow:hidden;
+    clip-path:inset(0 100% 0 0);
+    transition:clip-path 1.3s var(--ease);
+  }
+  .about-portrait.is-visible{ clip-path:inset(0 0% 0 0); }
+  .about-portrait img{ width:100%; height:100%; object-fit:cover; filter:saturate(.92) contrast(1.02); }
+  .eyebrow{
+    font-family:var(--serif); font-style:italic; color:var(--gold);
+    font-size:1rem; margin-bottom:1.1rem; display:block;
+  }
+  .about h2{
+    font-family:var(--serif); font-weight:450; font-size:clamp(1.7rem,3.4vw,2.6rem);
+    line-height:1.25; margin-bottom:1.4rem;
+  }
+  .about p{ color:var(--muted); font-size:.98rem; max-width:46ch; }
+  .about p + p{ margin-top:1rem; }
+  @media (max-width:820px){
+    .about .grid{ grid-template-columns:1fr; gap:2.6rem; }
+    .about-portrait{ max-width:340px; margin:0 auto; }
+  }
+
+  /* ---------- gallery ---------- */
+  .gallery{ padding:6rem 0 8rem; }
+  .gallery-head{ margin-bottom:3.6rem; }
+  .gallery-head .eyebrow{ margin-bottom:.6rem; }
+  .gallery-head h2{ font-family:var(--serif); font-weight:450; font-size:clamp(1.8rem,3.6vw,2.8rem); }
+  .work-list{ display:flex; flex-direction:column; gap:7vw; }
+  .work{
+    position:relative; display:grid; grid-template-columns:1fr; overflow:hidden;
+    background:var(--bg-soft);
+  }
+  .work-frame{ position:relative; width:100%; aspect-ratio:5/4; overflow:hidden; }
+  .work-frame img{ width:100%; height:100%; object-fit:cover; transform:scale(1.06); transition:transform 1.6s var(--ease); }
+  .work.is-open .work-frame img{ transform:scale(1); }
+  .work-panel{
+    position:absolute; inset:0; background:
+      linear-gradient(128deg, var(--rust) 0%, #3c2417 55%, var(--bg-soft) 100%);
+    transform:translateX(0%);
+    transition:transform 1.15s var(--ease);
+    display:flex; align-items:flex-end; padding:2rem;
+  }
+  .work.is-open .work-panel{ transform:translateX(-102%); }
+  .work-panel span{
+    font-family:var(--serif); font-style:italic; color:var(--ink); opacity:.85; font-size:1.1rem;
+  }
+  .work-caption{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:1.1rem .2rem 0;
+    font-size:.85rem; color:var(--muted);
+  }
+  .work-caption .no{ font-family:var(--serif); font-style:italic; color:var(--gold); }
+  @media (min-width:900px){
+    .work{ grid-template-columns:repeat(12,1fr); align-items:center; }
+    .work-frame{ grid-column:1 / span 8; }
+    .work:nth-child(even) .work-frame{ grid-column:5 / span 8; }
+    .work-caption{ grid-column:1 / span 4; grid-row:1; padding:0 2rem; flex-direction:column; align-items:flex-start; gap:.5rem; }
+    .work:nth-child(even) .work-caption{ grid-column:9 / span 4; order:2; }
+  }
+
+  /* ---------- timeline ---------- */
+  .timeline{ padding:7rem 0 8rem; }
+  .timeline .eyebrow{ display:block; margin-bottom:.6rem; }
+  .timeline h2{ font-family:var(--serif); font-weight:450; font-size:clamp(1.8rem,3.6vw,2.8rem); margin-bottom:3.6rem; }
+  .t-line{ position:relative; padding-left:2rem; }
+  .t-line::before{
+    content:''; position:absolute; left:0; top:.4rem; bottom:.4rem; width:1px;
+    background:var(--line);
+  }
+  .t-line::after{
+    content:''; position:absolute; left:0; top:.4rem; width:1px; height:0;
+    background:var(--gold);
+    transition:height 1.6s var(--ease);
+  }
+  .t-line.is-visible::after{ height:calc(100% - .8rem); }
+  .t-item{ position:relative; padding:0 0 3rem 1.6rem; }
+  .t-item::before{
+    content:''; position:absolute; left:-2rem; top:.35rem; width:9px; height:9px; border-radius:50%;
+    background:var(--bg); border:1.5px solid var(--gold);
+    transform:translateX(-3.5px);
+  }
+  .t-item .yr{ font-family:var(--serif); font-style:italic; color:var(--gold); font-size:1rem; display:block; margin-bottom:.3rem; }
+  .t-item h3{ font-weight:500; font-size:1rem; margin-bottom:.3rem; }
+  .t-item p{ color:var(--muted); font-size:.9rem; max-width:52ch; }
+
+  /* ---------- cta ---------- */
+  .cta{ padding:7rem 0 9rem; text-align:center; }
+  .cta h2{
+    font-family:var(--serif); font-style:italic; font-weight:450;
+    font-size:clamp(1.9rem,4.4vw,3.2rem); max-width:16ch; margin:0 auto 2.4rem;
+  }
+  .btn{
+    position:relative; display:inline-flex; align-items:center; gap:.6rem;
+    padding:1rem 2.4rem; font-family:var(--sans); font-size:.9rem; letter-spacing:.03em;
+    color:var(--ink); text-decoration:none; background:none; border:none; cursor:pointer;
+  }
+  .btn svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+  .btn svg rect{
+    fill:none; stroke:var(--gold); stroke-width:1.4;
+    stroke-dasharray:520; stroke-dashoffset:520;
+    transition:stroke-dashoffset 1s var(--ease);
+  }
+  .btn:hover svg rect, .btn:focus-visible svg rect{ stroke-dashoffset:0; }
+  .btn span{ position:relative; z-index:1; }
+
+  footer{
+    padding:3rem 6vw; display:flex; justify-content:space-between; align-items:center;
+    border-top:1px solid var(--line); font-size:.78rem; color:var(--muted);
+  }
+  footer a{ text-decoration:none; }
+  footer a:hover{ color:var(--gold); }
+  @media (max-width:560px){ footer{ flex-direction:column; gap:.8rem; text-align:center; } }
+
+  /* brush cursor trail — desktop only */
+  #brush-canvas{
+    position:fixed; inset:0; pointer-events:none; z-index:40; mix-blend-mode:screen;
+  }
+  .fade-up{ opacity:0; transform:translateY(24px); transition:opacity .9s var(--ease), transform .9s var(--ease); }
+  .fade-up.is-visible{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<canvas id="brush-canvas" aria-hidden="true"></canvas>
+
+<nav>
+  <div class="brand">Irina Zelenina</div>
+  <div class="links">
+    <a href="#about">About</a>
+    <a href="#works">Works</a>
+    <a href="#exhibitions">Exhibitions</a>
+    <a href="#contact">Shop</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <svg class="hero-sig" viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20,110 C40,40 70,30 90,90 C100,120 115,60 130,55 C145,50 150,110 165,100
+      C180,92 185,60 200,60 C215,60 220,120 235,115 C250,110 255,40 275,45
+      C300,50 300,110 320,105 C340,100 345,50 365,55 C385,60 385,110 405,108
+      C425,106 430,45 455,50 C480,55 480,105 505,100 C525,96 535,60 560,70" />
+  </svg>
+  <h1>Painting what light does to memory.</h1>
+  <p>OIL &nbsp;·&nbsp; FIGURATIVE WORK &nbsp;·&nbsp; MUNICH</p>
+  <div class="scroll-cue" aria-hidden="true"></div>
+</section>
+
+<div class="stroke-divider" data-reveal>
+  <svg viewBox="0 0 1000 28" preserveAspectRatio="none"><path d="M2,14 Q250,2 500,14 T998,14" /></svg>
+</div>
+
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="grid">
+      <div class="about-portrait" data-reveal>
+        <img src="https://raw.githubusercontent.com/alisalehi68/Irina_Zelenina/main/profilepic.png" alt="Irina Zelenina in her studio">
+      </div>
+      <div>
+        <span class="eyebrow">About the artist</span>
+        <h2 class="fade-up" data-reveal>Between the studio and the street, the same question — what does the eye keep?</h2>
+        <p class="fade-up" data-reveal>Irina Zelenina is an oil painter based in Munich, working between the studio and plein air. Her canvases sit at the edge of photograph and memory — figures rendered with quiet, deliberate brushwork, then softened by the same fading that time does to a face.</p>
+        <p class="fade-up" data-reveal>Her paintings have been shown across galleries and open studios, and are held in private collections in Germany and abroad. Each new work begins the same way: a moment worth not forgetting.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stroke-divider" data-reveal>
+  <svg viewBox="0 0 1000 28" preserveAspectRatio="none"><path d="M2,14 Q250,26 500,14 T998,14" /></svg>
+</div>
+
+<section class="gallery" id="works">
+  <div class="wrap">
+    <div class="gallery-head">
+      <span class="eyebrow">Selected works</span>
+      <h2>Pull the panel back.</h2>
+    </div>
+    <div class="work-list">
+
+      <div class="work" data-work>
+        <div class="work-frame">
+          <img src="https://raw.githubusercontent.com/alisalehi68/Irina_Zelenina/main/1.png" alt="Oil painting by Irina Zelenina, no. 1">
+          <div class="work-panel"><span>Oil on canvas</span></div>
+        </div>
+        <div class="work-caption"><span class="no">01</span><span>Oil on canvas, 2024</span></div>
+      </div>
+
+      <div class="work" data-work>
+        <div class="work-frame">
+          <img src="https://raw.githubusercontent.com/alisalehi68/Irina_Zelenina/main/2.png" alt="Oil painting by Irina Zelenina, no. 2">
+          <div class="work-panel"><span>Oil on canvas</span></div>
+        </div>
+        <div class="work-caption"><span class="no">02</span><span>Oil on canvas, 2024</span></div>
+      </div>
+
+      <div class="work" data-work>
+        <div class="work-frame">
+          <img src="https://raw.githubusercontent.com/alisalehi68/Irina_Zelenina/main/3.png" alt="Oil painting by Irina Zelenina, no. 3">
+          <div class="work-panel"><span>Oil on canvas</span></div>
+        </div>
+        <div class="work-caption"><span class="no">03</span><span>Oil on canvas, 2023</span></div>
+      </div>
+
+      <div class="work" data-work>
+        <div class="work-frame">
+          <img src="https://raw.githubusercontent.com/alisalehi68/Irina_Zelenina/main/4.png" alt="Oil painting by Irina Zelenina, no. 4">
+          <div class="work-panel"><span>Oil on canvas</span></div>
+        </div>
+        <div class="work-caption"><span class="no">04</span><span>Oil on canvas, 2023</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="stroke-divider" data-reveal>
+  <svg viewBox="0 0 1000 28" preserveAspectRatio="none"><path d="M2,14 Q250,2 500,14 T998,14" /></svg>
+</div>
+
+<section class="timeline" id="exhibitions">
+  <div class="wrap">
+    <span class="eyebrow">Journey</span>
+    <h2>Exhibitions &amp; education</h2>
+    <div class="t-line" data-reveal>
+      <div class="t-item fade-up" data-reveal>
+        <span class="yr">2024</span>
+        <h3>Group exhibition, Munich</h3>
+        <p>Selected figurative works shown alongside a group of contemporary oil painters.</p>
+      </div>
+      <div class="t-item fade-up" data-reveal>
+        <span class="yr">2023</span>
+        <h3>Open studio &amp; plein air series</h3>
+        <p>A season of outdoor painting sessions, later shown as a small studio exhibition.</p>
+      </div>
+      <div class="t-item fade-up" data-reveal>
+        <span class="yr">2018</span>
+        <h3>M.Sc. — formal art education</h3>
+        <p>Continued training in oil painting and drawing technique.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="wrap">
+    <h2 class="fade-up" data-reveal>Original paintings, available to collect.</h2>
+    <a class="btn" href="https://irinaliski.myshopify.com/collections/movement" target="_blank" rel="noopener">
+      <svg viewBox="0 0 220 56" preserveAspectRatio="none"><rect x="1" y="1" width="218" height="54" rx="1"/></svg>
+      <span>View the shop</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span>© Irina Zelenina</span>
+  <a href="https://instagram.com/irinaliski_" target="_blank" rel="noopener">@irinaliski_</a>
+</footer>
+
+<script>
+(function(){
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // reveal-on-scroll
+  var els = document.querySelectorAll('[data-reveal]');
+  if('IntersectionObserver' in window && !reduced){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      });
+    }, { threshold:0.25 });
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  // gallery panel open on scroll-into-view
+  var works = document.querySelectorAll('[data-work]');
+  if('IntersectionObserver' in window){
+    var wio = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('is-open'); wio.unobserve(e.target); }
+      });
+    }, { threshold:0.4 });
+    works.forEach(function(w){ wio.observe(w); });
+  } else {
+    works.forEach(function(w){ w.classList.add('is-open'); });
+  }
+
+  // desktop-only brush cursor trail
+  var isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+  if(!isTouch && !reduced){
+    var canvas = document.getElementById('brush-canvas');
+    var ctx = canvas.getContext('2d');
+    var w, h, points = [];
+    function resize(){ w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', function(e){
+      points.push({ x:e.clientX, y:e.clientY, life:1 });
+      if(points.length > 40) points.shift();
+    });
+    function loop(){
+      ctx.clearRect(0,0,w,h);
+      ctx.lineCap = 'round';
+      for(var i=1;i<points.length;i++){
+        var p1 = points[i-1], p2 = points[i];
+        var a = i / points.length;
+        ctx.strokeStyle = 'rgba(201,161,93,' + (a*0.35) + ')';
+        ctx.lineWidth = a * 10;
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+      requestAnimationFrame(loop);
+    }
+    loop();
+  } else {
+    document.getElementById('brush-canvas').remove();
+  }
+})();
+</script>
+</body>
+</html>
